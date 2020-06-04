@@ -12,6 +12,7 @@
 #include "Kernel/domain.hpp"
 #include "Kernel/relation.hpp"
 #include "Kernel/variable.hpp"
+#include "Graph/graph.hpp"
 
 
 namespace dcop_generator
@@ -33,6 +34,14 @@ namespace dcop_generator
         agent& get_agent(std::string name) {
             assert(m_agent_with_name.find(name) != m_agent_with_name.end());
             return *m_agents[m_agent_with_name[name]];
+        }
+
+        void save_graph_degree(variable::ptr var, int degree) {
+          graphDegree[var] = degree;
+        }
+
+        std::map<variable::ptr, int> & get_graph_degree() {
+          return graphDegree;
         }
 
         void save_decision_domain(variable::ptr var, domain::ptr dom) {
@@ -74,6 +83,9 @@ namespace dcop_generator
         std::vector<constraint_pdc::ptr>& get_constraints_pdc() {
             return m_constraints_pdc;
         }
+
+
+
 
         std::vector<agent::ptr> & get_agents() {
             return m_agents;
@@ -163,6 +175,10 @@ namespace dcop_generator
         }
 
     protected:
+        virtual void add_decision_variables(std::vector<int> variable_ids, int d_min, int d_max, graph input_graph);
+        virtual void add_random_variables(int random_variable_count, int d_min, int d_max);
+        virtual void add_constraint_pdcdcop(std::vector<variable::ptr> variables, int arity, std::string rel_name = "");
+
         // Given the set of agent id, creates the instance agents.
         virtual void add_agents(std::vector<int> agents_id);
 
@@ -170,10 +186,6 @@ namespace dcop_generator
         // and the specifics for their domain. The variables are mapped to the
         // corresponding agent with the p_map_vars_to_agents mapping.
         virtual void add_variables(std::vector<int> variables_id, int d_min, int d_max);
-
-        virtual void add_random_variables(int random_variable_count, int d_min, int d_max);
-
-
         // Creates a new relation of arity, constraint tighness and value range
         // given as parameter. The values and constraint costs are randomly
         // generated via uniform distribution ranging respectively in [d_min, d_max]
@@ -183,13 +195,13 @@ namespace dcop_generator
         // Creates a new constraint whose scope is given as a paramter and
         // associates it to the relation with corresponding arity.
         virtual void add_constraint(std::vector<int> variables, int arity, std::string rel_name = "");
-        virtual void add_constraint_pdcdcop(std::vector<std::string> variables, int arity, std::string rel_name = "");
 
         std::vector<variable::ptr> m_decision_variables;
         std::vector<variable::ptr> m_random_variables;
         std::map<variable::ptr, domain::ptr> m_decision_domains;
         std::map<variable::ptr, domain::ptr> m_random_domains;
         std::vector<constraint_pdc::ptr> m_constraints_pdc;
+        std::map<variable::ptr, int> graphDegree;
 
         std::vector<agent::ptr> m_agents;
         std::map<std::string, int> m_agent_with_name;

@@ -31,7 +31,16 @@ namespace dcop_generator {
         }
 
         std::string to_string() const {
-            return m_name + " (domain: " + m_domain + ") owned by: " + m_agent;
+            return std::to_string(m_id) + " " + m_name + " (domain: " + m_domain + ") owned by: " + m_agent;
+        }
+
+        friend bool operator==(const variable &lhs, const variable &rhs) {
+          // return (lhs.m_id == rhs.m_id) && (lhs.m_name == rhs.m_name) && (lhs.m_domain == rhs.m_domain) && (lhs.m_agent == rhs.m_agent);
+          return lhs.m_name == rhs.m_name;
+        }
+
+        friend bool operator!=(const variable &lhs, const variable &rhs) {
+          return lhs.m_name != rhs.m_name;
         }
 
     private:

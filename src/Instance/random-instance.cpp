@@ -40,7 +40,7 @@ random_instance::random_instance(int nb_agents, int nb_rands, int domain_size, i
             m_vars_to_agents[i] = n;
     }
 
-    add_variables(graph.get_nodes(), 0, domain_size - 1);
+    add_decision_variables(graph.get_nodes(), 0, domain_size - 1, graph);
     add_random_variables(nb_rands, 0, rand_dom_size - 1);
 
     for (int k = max_constr_arity; k >= 3; k--) {
@@ -68,15 +68,19 @@ random_instance::random_instance(int nb_agents, int nb_rands, int domain_size, i
     add_relation(2, p2, 0, domain_size - 1, rel_name);
 #endif
 
-        std::vector<std::string> scope(2);
         for (int i = 0; i < graph.get_nb_nodes(); ++i) {
             for (int j = 0; j < i; ++j) {
                 if (graph.get_edge(i, j)) {
 #ifndef ONEREL
-                    scope[0] = "x_" + std::to_string(i);
-                    scope[1] = "x_" + std::to_string(j);
-                    std::string rel_name = "constraint" + scope[0] + "_" + scope[1];
-                    add_relation(2, p2, 0, domain_size - 1, rel_name);
+                    // scope[0] = "x_" + std::to_string(i);
+                    std::vector<variable::ptr> scope(2);
+
+                    variable::ptr var_i = make_shared<variable>(i + 1, "x" + std::to_string(i + 1), "d", "a" + std::to_string(i + 1));
+                    variable::ptr var_j = make_shared<variable>(j + 1, "x" + std::to_string(j + 1), "d", "a" + std::to_string(j + 1));
+                    scope.push_back(var_i);
+                    scope.push_back(var_j);
+                    std::string rel_name = "constraint_" + var_i->get_name() + "_" + var_j->get_name();
+                    // add_relation(2, p2, 0, domain_size - 1, rel_name);
 #endif
                     add_constraint_pdcdcop(scope, 2, rel_name);
                 }

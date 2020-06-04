@@ -35,21 +35,38 @@ void instance::add_agents(std::vector<int> nodes) {
 
 
 void instance::add_variables(std::vector<int> variables_id, int d_min, int d_max) {
+  // for (int var_id : variables_id) {
+  //   // int agent_id = m_vars_to_agents[var_id];
+  //   std::string agent_name = "a" + std::to_string(var_id + 1);
+  //   std::string var_name = "x" + std::to_string(var_id + 1);
+  //   // instance::save(make_shared<domain>("d", d_min, d_max));
+  //   // instance::save(make_shared<variable>(var_id + 1, var_name, "d", agent_name));
+  //
+  //   instance::save_decision_domain(make_shared<variable>(var_id + 1, var_name, "d", agent_name), make_shared<domain>("d", d_min, d_max));
+  // }
+}
+
+void instance::add_decision_variables(std::vector<int> variables_id, int d_min, int d_max, graph input_graph) {
   for (int var_id : variables_id) {
-    int agent_id = m_vars_to_agents[var_id];
-    std::string agent_name = "a_" + std::to_string(agent_id);
+    // int agent_id = m_vars_to_agents[var_id];
+    std::string agent_name = "a" + std::to_string(var_id + 1);
     std::string var_name = "x" + std::to_string(var_id + 1);
-    instance::save(make_shared<domain>("d", d_min, d_max));
-    instance::save(make_shared<variable>(var_id + 1, var_name, "d", agent_name));
+    // instance::save(make_shared<domain>("d", d_min, d_max));
+    // instance::save(make_shared<variable>(var_id + 1, var_name, "d", agent_name));
+
+    variable::ptr decision = make_shared<variable>(var_id + 1, var_name, "d", agent_name);
+
+    instance::save_decision_domain(decision, make_shared<domain>("d", d_min, d_max));
+    instance::save_graph_degree(decision, input_graph.get_degree(var_id));
   }
 }
 
 void instance::add_random_variables(int random_variable_count, int d_min, int d_max) {
   for (int var_id = 0; var_id < random_variable_count; var_id++) {
-    std::string agent_name = "a_" + std::to_string(0);
+    std::string agent_name = "a" + std::to_string(var_id + 1);
     std::string var_name = "y" + std::to_string(var_id + 1);
-    instance::save_random_domain(make_shared<domain>("d", d_min, d_max));
-    instance::save_random_variable(make_shared<variable>(var_id + 1, var_name, "d", agent_name));
+
+    instance::save_random_domain(make_shared<variable>(var_id + 1, var_name, "d", agent_name), make_shared<domain>("d", d_min, d_max));
   }
 }
 
@@ -119,19 +136,18 @@ void instance::add_constraint(std::vector<int> variables_id, int arity, std::str
           make_shared<constraint>("c_" + std::to_string(c_id), variables_id, scope, rel_name)));
 }
 
-void instance::add_constraint_pdcdcop(std::vector<std::string> variables, int arity, std::string rel_name) {
-  if (rel_name.length() == 0)
-    rel_name = "r_" + std::to_string(arity);
+void instance::add_constraint_pdcdcop(std::vector<variable::ptr> variables, int arity, std::string rel_name) {
+  // if (rel_name.length() == 0)
+  //   rel_name = "r_" + std::to_string(arity);
 
-  std::vector<std::string> scope;
-
-  for (std::string var : variables) {
-    scope.push_back(var);
-  }
+  // std::vector<std::string> scope;
+  //
+  // for (std::string var : variables) {
+  //   scope.push_back(var);
+  // }
 
   int c_id = instance::m_constraint_with_name.size();
-  instance::save(constraint_pdc::ptr(
-          make_shared<constraint_pdc>("c_" + std::to_string(c_id), scope, rel_name)));
+  instance::save(constraint_pdc::ptr(make_shared<constraint_pdc>("c_" + std::to_string(c_id), variables, rel_name)));
 }
 
 

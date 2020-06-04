@@ -7,12 +7,12 @@ output::output(std::string pathout, std::string fileout, int nb_instances, int n
           m_curr_insance(nb_start) {
 
     // Create folder if necessary:
-    misc_utils::utils::create_dir(pathout);
+    // misc_utils::utils::create_dir(pathout);
 }
 
 void output::to_string(instance::ptr instance) {
-
-    std::string file = m_pathout + "/rep_" + std::to_string(m_curr_insance) + "_" + m_fileout;
+    // std::string file = m_pathout + "/rep_" + std::to_string(m_curr_insance) + "_" + m_fileout;
+    std::string file = m_pathout + "/" + std::to_string(m_curr_insance);
     // Template pattern
     to_string(instance, file);
 

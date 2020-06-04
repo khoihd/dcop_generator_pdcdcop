@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include "Kernel/variable.hpp"
 
 namespace dcop_generator {
 
@@ -12,17 +13,18 @@ namespace dcop_generator {
     public:
       typedef std::shared_ptr<constraint_pdc> ptr;
 
-      constraint_pdc(std::string name,
-                 std::vector<std::string> scope,
-                 std::string rel)
-              : m_name(name), m_scope(scope), m_relation(rel)
-      { }
+      constraint_pdc(std::string name, std::vector<variable::ptr> scope, std::string rel) : m_name(name), m_relation(rel) {
+
+        for (variable::ptr var : scope) {
+          m_scope.push_back(var); 
+        }
+      }
 
       std::string get_name() const {
         return m_name;
       }
 
-      std::vector<std::string> &get_scope() {
+      std::vector<variable::ptr> &get_scope() {
         return m_scope;
       }
 
@@ -36,8 +38,8 @@ namespace dcop_generator {
 
       std::string to_string() const {
         std::string res = m_name + " rel: " + m_relation + " (";
-        for (std::string s : m_scope)
-          res += s + " ";
+        for (variable::ptr s : m_scope)
+          res += s->get_name() + " ";
         res += ")";
         return res;
       }
@@ -48,7 +50,7 @@ namespace dcop_generator {
       std::string m_name;
 
       // The name of the variables in the scope of this constraint_pdc.
-      std::vector<std::string> m_scope;
+      std::vector<variable::ptr> m_scope;
 
       // The ID of the variables in the scope of this constraint_pdc.
       // std::vector<int> m_scope_id;

@@ -39,7 +39,9 @@ namespace dcop_generator {
       }
 
       std::string to_string() const {
-        return m_name + " [" + std::to_string(m_min) + ", " +
+        // return m_name + " [" + std::to_string(m_min) + ", " +
+        //         std::to_string(m_max) + "]";
+        return "[" + std::to_string(m_min) + "," +
                 std::to_string(m_max) + "]";
       }
 
