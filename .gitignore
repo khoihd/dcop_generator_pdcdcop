@@ -1,5 +1,6 @@
 # Ignore the build and lib dirs
 build
+CMakeFiles/*
 
 # Ignore any executables
 bin/*
