@@ -14,8 +14,7 @@ using namespace misc_utils;
 using namespace std;
 
 
-meeting_scheduling_instance::meeting_scheduling_instance(int nb_meetings, int meetings_times, double p1, double p2) {
-
+meeting_scheduling_instance::meeting_scheduling_instance(int nb_meetings, int nb_rands, int meetings_times, int rand_dom_size, double p1, double p2) {
     instance::type = "meeting-scheduling";
     this->setP1(p1);
     this->setP2(p2);
@@ -28,18 +27,12 @@ meeting_scheduling_instance::meeting_scheduling_instance(int nb_meetings, int me
 
     int nb_nodes = graph.get_nb_nodes();
     for (int n = 0; n < nb_nodes; ++n) {
-//        random_graph subgraph(1, 1);
-
-//        int last_node = graph.get_nb_nodes();
-//        graph.join(subgraph, n, 1);
-
-        // Map new added Variables to agent
-        m_vars_to_agents[n] = n;        // Map old variable to agent
-//        for (int i = last_node; i < graph.get_nb_edges(); ++i)
-//            m_vars_to_agents[i] = n;
+        m_vars_to_agents[n] = n;
     }
 
     add_variables(graph.get_nodes(), 0, meetings_times - 1);
+    add_decision_variables(graph.get_nodes(), 0, meetings_times - 1, graph);
+    add_random_variables(nb_rands, 0, rand_dom_size - 1);
 
     for (int k = m_max_constraint_arity; k >= 3; k--) {
         vector<vector<int> > cliques = graph_utils::cliques(graph, k);
@@ -65,11 +58,23 @@ meeting_scheduling_instance::meeting_scheduling_instance(int nb_meetings, int me
         for (int i = 0; i < graph.get_nb_nodes(); ++i) {
             for (int j = 0; j < i; ++j) {
                 if (graph.get_edge(i, j)) {
-                    std::string rel_name = "r_" + std::to_string(i) + "_" + std::to_string(j);
-                    add_relation(2, p2, 0, meetings_times - 1, rel_name);
-                    scope[0] = i;
-                    scope[1] = j;
-                    add_constraint(scope, 2, rel_name);
+                    // std::string rel_name = "r_" + std::to_string(i) + "_" + std::to_string(j);
+                    // add_relation(2, p2, 0, meetings_times - 1, rel_name);
+                    // scope[0] = i;
+                    // scope[1] = j;
+                    // add_constraint(scope, 2, rel_name);
+
+                    // scope[0] = "x_" + std::to_string(i);
+                    std::vector<variable::ptr> scope(2);
+
+                    variable::ptr var_i = make_shared<variable>(i + 1, "x" + std::to_string(i + 1), "d", "a" + std::to_string(i + 1));
+                    variable::ptr var_j = make_shared<variable>(j + 1, "x" + std::to_string(j + 1), "d", "a" + std::to_string(j + 1));
+                    scope.push_back(var_i);
+                    scope.push_back(var_j);
+                    std::string rel_name = "constraint_" + var_i->get_name() + "_" + var_j->get_name();
+                    // add_relation(2, p2, 0, domain_size - 1, rel_name);
+
+                    add_constraint_pdcdcop(scope, 2, rel_name);
                 }
             }
         }

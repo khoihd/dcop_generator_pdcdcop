@@ -24,7 +24,7 @@ namespace dcop_generator
         // @param p1 The constraint network density
         // @param p2 The constraint tightness
         meeting_scheduling_instance(int nb_meetings, int meetings_times, double p1, double p2);
-
+        meeting_scheduling_instance(int nb_meetings, int nb_rand, int meetings_times, int rand_dom_size, double p1, double p2);
         ~meeting_scheduling_instance();
 
     protected:

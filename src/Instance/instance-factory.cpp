@@ -106,11 +106,14 @@ instance::ptr instance_factory::create(int argc, char* argv[]) {
 
         if (!strcmp("-meeting-scheduling", argv[i])) {
             int nb_agents = std::stoi(argv[++i]);
+            int nb_rands = std::stoi(argv[++i]);
             int dom_size = std::stoi(argv[++i]);
+            int rand_dom_size = std::stoi(argv[++i]);
             double p1_agents = std::stof(argv[++i]);
             double p2 = 1 - std::stof(argv[++i]);
 
-            return make_shared<meeting_scheduling_instance>(nb_agents, dom_size, p1_agents, p2);
+            // return make_shared<meeting_scheduling_instance>(nb_agents, dom_size, p1_agents, p2);
+            return make_shared<meeting_scheduling_instance>(nb_agents, nb_rands, dom_size, rand_dom_size, p1_agents, p2);
         }
 
     }
