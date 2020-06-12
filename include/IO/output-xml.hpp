@@ -23,7 +23,7 @@ namespace dcop_generator
     void dump_random_variables(std::ostream &os, std::map<variable::ptr, domain::ptr> domains);
 
     void dump_functions_pdc(std::ostream &os, std::vector<constraint_pdc::ptr> constraints);
-    void dump_constraints_pdc(std::ostream &os, std::vector<constraint_pdc::ptr> d_constraints, std::vector<constraint_pdc::ptr> r_constraints, std::map<variable::ptr, domain::ptr> domains);
+    void dump_constraints_pdc(std::ostream &os, std::vector<constraint_pdc::ptr> d_constraints, std::vector<constraint_pdc::ptr> r_constraints, std::map<variable::ptr, domain::ptr> domains, bool isMeeting);
 
     void dump_initProb(std::ostream &os, std::map<variable::ptr, domain::ptr> domains);
     void dump_transition(std::ostream &os, std::map<variable::ptr, domain::ptr> domains);

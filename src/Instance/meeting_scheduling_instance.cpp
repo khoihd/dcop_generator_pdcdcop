@@ -30,7 +30,7 @@ meeting_scheduling_instance::meeting_scheduling_instance(int nb_meetings, int nb
         m_vars_to_agents[n] = n;
     }
 
-    add_variables(graph.get_nodes(), 0, meetings_times - 1);
+    // add_variables(graph.get_nodes(), 0, meetings_times - 1);
     add_decision_variables(graph.get_nodes(), 0, meetings_times - 1, graph);
     add_random_variables(nb_rands, 0, rand_dom_size - 1);
 

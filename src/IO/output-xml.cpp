@@ -5,6 +5,7 @@
 #include <random>
 
 #include "IO/output-xml.hpp"
+#include "Instance/meeting_scheduling_instance.hpp"
 #include "Kernel/agent.hpp"
 #include "Kernel/domain.hpp"
 #include "Kernel/variable.hpp"
@@ -131,7 +132,13 @@ void output_xml::to_string(instance::ptr instance, std::string file) {
 
       dump_decision_variables(os, instance->get_decision_domains()); // decision1 = [0,1,2];
       dump_random_variables(os, instance->get_random_domains()); // random1 = [0,1,2];
-      dump_constraints_pdc(os, instance->get_constraints_pdc(), randomConstraints, joined_domains);
+
+      if (instance->to_string() == "random-network") {
+        dump_constraints_pdc(os, instance->get_constraints_pdc(), randomConstraints, joined_domains, false);
+      }
+      else if (instance->to_string() == "meeting scheduling") {
+        dump_constraints_pdc(os, instance->get_constraints_pdc(), randomConstraints, joined_domains, true);
+      }
       // dump_constraints_pdc(os, instance->get_constraints_pdc(), instance->get_decision_domains());
       // dump_functions_pdc(os, instance->get_constraints_pdc());
       dump_initProb(os, instance->get_random_domains());
@@ -158,7 +165,7 @@ void output_xml::dump_random_variables(std::ostream &os, std::map<variable::ptr,
 }
 
 void output_xml::dump_constraints_pdc(std::ostream &os, std::vector<constraint_pdc::ptr> decision_constraints, std::vector<constraint_pdc::ptr> random_constraints,
-                                      std::map<variable::ptr, domain::ptr> joined_domains) {
+                                      std::map<variable::ptr, domain::ptr> joined_domains, bool isMeeting) {
   std::mt19937 rng;
   rng.seed(std::random_device()());
 
@@ -195,7 +202,9 @@ void output_xml::dump_constraints_pdc(std::ostream &os, std::vector<constraint_p
     // Assume binary functions
     for (int value1 : domainList.front()) {
       for (int value2 : domainList.back()) {
-        os << std::setprecision(2) << value1 << "," << value2 << "," << uniformUtility(rng) << "|" << endl;
+        if (!isMeeting || (isMeeting && (value1 != value2))) {
+          os << std::setprecision(2) << value1 << "," << value2 << "," << uniformUtility(rng) << "|" << endl;
+        }
       }
     }
 

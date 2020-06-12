@@ -27,7 +27,6 @@ instance::instance()
 instance::~instance()
 { }
 
-
 void instance::add_agents(std::vector<int> nodes) {
   for (int agent_id : nodes)
     instance::save(make_shared<agent>("a_" + std::to_string(agent_id)));
