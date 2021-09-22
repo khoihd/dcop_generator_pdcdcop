@@ -1,5 +1,5 @@
 # read: http://www.cmake.org/Wiki/CMake/Tutorials/How_to_create_a_ProjectConfig.cmake_file
-cmake_minimum_required(VERSION 2.8.4)
+cmake_minimum_required(VERSION 2.8...3.21)
 project(dcop_generator_pdcdcop C CXX)
 set(dcop_generator_pdcdcop_MAJOR_VERSION 0)
 set(dcop_generator_pdcdcop_MINOR_VERSION 1)
@@ -7,7 +7,7 @@ set(dcop_generator_pdcdcop_PATCH_VERSION 0)
 set(VERSION  ${dcop_generator_pdcdcop_MAJOR_VERSION}.${dcop_generator_pdcdcop_MINOR_VERSION}.${dcop_generator_pdcdcop_PATCH_VERSION})
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "/Users/khoihd/Dropbox/dcop_generator_pdcdcop/build")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "./build")
 
 set(SOURCE_DIR src/)
 set(LIB_DIR lib/)
