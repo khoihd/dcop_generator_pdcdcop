@@ -104,10 +104,12 @@ void output_xml::to_string(instance::ptr instance, std::string file) {
   std::string instance_number =  splited_strings.at(1);
 
   int decision_domain, random_domain;
+
   for (auto const& entry : instance->get_decision_domains()) {
     decision_domain = entry.second->get_max() + 1;
     break;
   }
+
   for (auto const& entry : instance->get_random_domains()) {
     random_domain = entry.second->get_max() + 1;
     break;
@@ -133,7 +135,7 @@ void output_xml::to_string(instance::ptr instance, std::string file) {
       dump_decision_variables(os, instance->get_decision_domains()); // decision1 = [0,1,2];
       dump_random_variables(os, instance->get_random_domains()); // random1 = [0,1,2];
 
-      if (instance->to_string() == "random-network") {
+      if (instance->to_string() == "random-network" || instance->to_string() == "grid-weather") {
         dump_constraints_pdc(os, instance->get_constraints_pdc(), randomConstraints, joined_domains, false);
       }
       else if (instance->to_string() == "meeting scheduling") {

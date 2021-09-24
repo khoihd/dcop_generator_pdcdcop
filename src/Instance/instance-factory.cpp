@@ -5,6 +5,7 @@
 #include "Instance/random-instance.hpp"
 #include "Instance/scale-free-instance.hpp"
 #include "Instance/grid-instance.hpp"
+#include "Instance/grid-weather-instance.hpp"
 #include "Instance/instance-factory.hpp"
 #include "IO/input.hpp"
 
@@ -101,6 +102,35 @@ instance::ptr instance_factory::create(int argc, char* argv[]) {
             }
             else {
                 return make_shared<grid_instance>(nb_agents, dom_size, p2);
+            }
+        }
+
+        if (!strcmp("-grid-weather", argv[i])) {
+            int nb_agents = std::stoi(argv[++i]);
+            int dom_size = std::stoi(argv[++i]);
+            int rand_dom_size = std::stoi(argv[++i]);
+            double p2 = 1 - std::stof(argv[++i]);
+
+            if (argc > input::get_min_nb_arguments() + 3 + 1) {
+                int max_constr_arity = std::stoi(argv[++i]);
+                int max_nb_neigbors = std::stoi(argv[++i]);
+
+                int nb_local_vars = std::stoi(argv[++i]);
+                int max_nb_boundary_vars = std::stoi(argv[++i]);
+                double p1_local_vars = std::stoi(argv[++i]);
+
+                return make_shared<grid_weather_instance>(nb_agents,
+                                                  dom_size,
+                                                  rand_dom_size,
+                                                  p2,
+                                                  max_constr_arity,
+                                                  max_nb_neigbors,
+                                                  nb_local_vars,
+                                                  max_nb_boundary_vars,
+                                                  p1_local_vars);
+            }
+            else {
+                return make_shared<grid_weather_instance>(nb_agents, dom_size, rand_dom_size, p2);
             }
         }
 

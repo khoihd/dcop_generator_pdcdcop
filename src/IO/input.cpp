@@ -33,6 +33,10 @@ string input::usage() {
             "\n\t\t\t"
             "[max_constr_arity[=2] max_nb_neighbors[=4] "
             "nb_local_variables[=1] max_nb_boundary_variables[=1] p1_local_variables[=1.0]]";
+    ret += "\n\t-grid-weather        nb_agents decision_domain_size random_domain_size p2 "
+            "\n\t\t\t"
+            "[max_constr_arity[=2] max_nb_neighbors[=4] "
+            "nb_local_variables[=1] max_nb_boundary_variables[=1] p1_local_variables[=1.0]]";
     ret += "\n\t-meeting-scheduling  nb_agents domain_size p1 p2";
 
     return ret;
@@ -57,6 +61,9 @@ void input::check_params(int argc, char *argv[]) {
             return;
         if (strcmp("-grid", argv[i]) == 0 &&
             (argc == get_min_nb_arguments() + 3 || argc == get_min_nb_arguments() + 8))
+            return;
+        if (strcmp("-grid-weather", argv[i]) == 0 &&
+            (argc == get_min_nb_arguments() + 3 + 1 || argc == get_min_nb_arguments() + 8 + 1))
             return;
         if (strcmp("-meeting-scheduling", argv[i]) == 0 &&
             (argc == get_min_nb_arguments() + 4 + 2))
