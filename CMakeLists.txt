@@ -48,11 +48,12 @@ set(SOURCE_FILES src/main.cpp
 	include/Instance/random-instance.hpp
 	include/Instance/scale-free-instance.hpp
 	include/Instance/grid-instance.hpp
+  include/Instance/grid-weather-instance.hpp
 	include/Instance/meeting_scheduling_instance.hpp
 	include/Instance/acgdr_instance.hpp
 
 	src/Graph/graph.cpp
-        src/Graph/planar-graph.cpp
+  src/Graph/planar-graph.cpp
 	src/Graph/random-graph.cpp
 	src/Graph/scale-free-graph.cpp
 	src/Graph/graph-utils.cpp
@@ -70,6 +71,7 @@ set(SOURCE_FILES src/main.cpp
 	src/Instance/random-instance.cpp
 	src/Instance/scale-free-instance.cpp
 	src/Instance/grid-instance.cpp
+  src/Instance/grid-weather-instance.cpp
 	src/Instance/meeting_scheduling_instance.cpp
 	src/Instance/acgdr_instance.cpp
 )
