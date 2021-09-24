@@ -1,6 +1,10 @@
 # Ignore the build and lib dirs
 build
 CMakeFiles/
+.idea
+CMakeCache.txt
+Makefile
+cmake_install.cmake
 
 # Ignore any executables
 bin/*
