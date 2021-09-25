@@ -36,8 +36,9 @@ meeting_scheduling_instance::meeting_scheduling_instance(int nb_meetings, int nb
 
     for (int k = m_max_constraint_arity; k >= 3; k--) {
         vector<vector<int> > cliques = graph_utils::cliques(graph, k);
-        if (!cliques.empty())
+        if (!cliques.empty()) {
             add_relation(k, p2, 0, meetings_times - 1, "clique_"+std::to_string(k));
+        }
 
         for (vector<int> nodes : cliques) {
             // Save Constraint of arity k

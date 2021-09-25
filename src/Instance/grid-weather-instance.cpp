@@ -11,7 +11,7 @@ using namespace std;
 
 // #define ONEREL
 
-grid_weather_instance::grid_weather_instance(int nb_agents, int domain_size, int rand_dom_size, double p2, int max_constr_arity, int max_nb_neighbors,
+grid_weather_instance::grid_weather_instance(int nb_agents, int nb_rands, int domain_size, int rand_dom_size, double p2, int max_constr_arity, int max_nb_neighbors,
                              int nb_local_variables, int max_nb_boundary_variables, double p1_local_variables) {
     instance::type = "grid_weather";
     planar_graph graph(nb_agents, max_nb_neighbors);
@@ -39,16 +39,39 @@ grid_weather_instance::grid_weather_instance(int nb_agents, int domain_size, int
 //    add_variables(graph.get_nodes(), 0, domain_size - 1);
     add_decision_variables(graph.get_nodes(), 0, domain_size - 1, graph);
     // The number of random variables is equal to the number of decision variables
-    add_random_variables(graph.get_nodes().size(), 0, rand_dom_size - 1);
+    add_random_variables(nb_rands, 0, rand_dom_size - 1);
 
     for (int k = max_constr_arity; k >= 3; k--) {
         vector<vector<int> > cliques = graph_utils::cliques(graph, k);
-        if (!cliques.empty())
+
+//        for (auto i: cliques) {
+//            for (auto j: i) {
+//                cout << j;
+//            }
+//        }
+
+        if (!cliques.empty()) {
             add_relation(k, p2, 0, domain_size - 1);
+            printf("Cliques not empty!");
+        }
 
         for (vector<int> nodes : cliques) {
             // Save Constraint of arity k
             add_constraint(nodes, k);
+
+            auto arity = nodes.size();
+            std::vector<variable::ptr> scope(arity);
+            std::string rel_name = "constraint";
+            for (auto node : nodes) {
+                variable::ptr var_i = make_shared<variable>(node, "x" + std::to_string(node), "d", "a" + std::to_string(node));
+                scope.push_back(var_i);
+                rel_name += "_x" + std::to_string(node);
+            }
+
+//            cout << scope;
+            cout << rel_name;
+
+            add_constraint_pdcdcop(scope, arity, rel_name);
 
             // Remove edges from graph (all pairs in nodes)
             do {

@@ -63,7 +63,7 @@ void input::check_params(int argc, char *argv[]) {
             (argc == get_min_nb_arguments() + 3 || argc == get_min_nb_arguments() + 8))
             return;
         if (strcmp("-grid-weather", argv[i]) == 0 &&
-            (argc == get_min_nb_arguments() + 3 + 1 || argc == get_min_nb_arguments() + 8 + 1))
+            (argc == get_min_nb_arguments() + 3 + 2 || argc == get_min_nb_arguments() + 8 + 2))
             return;
         if (strcmp("-meeting-scheduling", argv[i]) == 0 &&
             (argc == get_min_nb_arguments() + 4 + 2))

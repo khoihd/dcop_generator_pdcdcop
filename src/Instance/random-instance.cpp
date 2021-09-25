@@ -45,8 +45,10 @@ random_instance::random_instance(int nb_agents, int nb_rands, int domain_size, i
 
     for (int k = max_constr_arity; k >= 3; k--) {
         vector<vector<int> > cliques = graph_utils::cliques(graph, k);
-        if (!cliques.empty())
+        if (!cliques.empty()) {
             add_relation(k, p2, 0, domain_size - 1);
+            printf("Cliques not empty!");
+        }
 
         for (vector<int> nodes : cliques) {
             // Save Constraint of arity k

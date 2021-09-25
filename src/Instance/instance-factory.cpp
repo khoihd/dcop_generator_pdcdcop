@@ -107,11 +107,12 @@ instance::ptr instance_factory::create(int argc, char* argv[]) {
 
         if (!strcmp("-grid-weather", argv[i])) {
             int nb_agents = std::stoi(argv[++i]);
+            int nb_rands = std::stoi(argv[++i]);
             int dom_size = std::stoi(argv[++i]);
             int rand_dom_size = std::stoi(argv[++i]);
             double p2 = 1 - std::stof(argv[++i]);
 
-            if (argc > input::get_min_nb_arguments() + 3 + 1) {
+            if (argc > input::get_min_nb_arguments() + 3 + 2) {
                 int max_constr_arity = std::stoi(argv[++i]);
                 int max_nb_neigbors = std::stoi(argv[++i]);
 
@@ -120,6 +121,7 @@ instance::ptr instance_factory::create(int argc, char* argv[]) {
                 double p1_local_vars = std::stoi(argv[++i]);
 
                 return make_shared<grid_weather_instance>(nb_agents,
+                                                  nb_rands,
                                                   dom_size,
                                                   rand_dom_size,
                                                   p2,
@@ -130,7 +132,7 @@ instance::ptr instance_factory::create(int argc, char* argv[]) {
                                                   p1_local_vars);
             }
             else {
-                return make_shared<grid_weather_instance>(nb_agents, dom_size, rand_dom_size, p2);
+                return make_shared<grid_weather_instance>(nb_agents, nb_rands, dom_size, rand_dom_size, p2);
             }
         }
 

@@ -110,5 +110,13 @@ vector< vector<int> > graph_utils::cliques(const graph &pGraph, int size) {
 	} while (utils::next_combination
 			(nodes.begin(), nodes.begin() + size, nodes.end()));
 
+    printf("Print out clique...\n");
+	for (auto clique : cliques) {
+	    printf("Clique = \n");
+	    for (auto node : clique) {
+	        std:cout << std::to_string(node) + " " << std::endl;
+	    }
+	}
+
 	return cliques;
 }
