@@ -9,7 +9,7 @@ namespace dcop_generator
     public:
         typedef std::shared_ptr<grid_weather_instance > ptr;
 
-        grid_weather_instance (int nb_agents, int domain_size, int rand_domain_size, double p2,
+        grid_weather_instance (int nb_agents, int nb_rands, int domain_size, int rand_domain_size, double p2,
                        // optional
                        int max_constr_arity=2,
                        int max_nb_neighbors=4,
