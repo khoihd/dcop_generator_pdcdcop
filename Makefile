@@ -465,6 +465,30 @@ src/Instance/grid-instance.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/dcop_generator_pdcdcop.dir/build.make CMakeFiles/dcop_generator_pdcdcop.dir/src/Instance/grid-instance.cpp.s
 .PHONY : src/Instance/grid-instance.cpp.s
 
+src/Instance/grid-weather-instance.o: src/Instance/grid-weather-instance.cpp.o
+.PHONY : src/Instance/grid-weather-instance.o
+
+# target to build an object file
+src/Instance/grid-weather-instance.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dcop_generator_pdcdcop.dir/build.make CMakeFiles/dcop_generator_pdcdcop.dir/src/Instance/grid-weather-instance.cpp.o
+.PHONY : src/Instance/grid-weather-instance.cpp.o
+
+src/Instance/grid-weather-instance.i: src/Instance/grid-weather-instance.cpp.i
+.PHONY : src/Instance/grid-weather-instance.i
+
+# target to preprocess a source file
+src/Instance/grid-weather-instance.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dcop_generator_pdcdcop.dir/build.make CMakeFiles/dcop_generator_pdcdcop.dir/src/Instance/grid-weather-instance.cpp.i
+.PHONY : src/Instance/grid-weather-instance.cpp.i
+
+src/Instance/grid-weather-instance.s: src/Instance/grid-weather-instance.cpp.s
+.PHONY : src/Instance/grid-weather-instance.s
+
+# target to generate assembly for a file
+src/Instance/grid-weather-instance.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dcop_generator_pdcdcop.dir/build.make CMakeFiles/dcop_generator_pdcdcop.dir/src/Instance/grid-weather-instance.cpp.s
+.PHONY : src/Instance/grid-weather-instance.cpp.s
+
 src/Instance/instance-factory.o: src/Instance/instance-factory.cpp.o
 .PHONY : src/Instance/instance-factory.o
 
@@ -660,6 +684,9 @@ help:
 	@echo "... src/Instance/grid-instance.o"
 	@echo "... src/Instance/grid-instance.i"
 	@echo "... src/Instance/grid-instance.s"
+	@echo "... src/Instance/grid-weather-instance.o"
+	@echo "... src/Instance/grid-weather-instance.i"
+	@echo "... src/Instance/grid-weather-instance.s"
 	@echo "... src/Instance/instance-factory.o"
 	@echo "... src/Instance/instance-factory.i"
 	@echo "... src/Instance/instance-factory.s"

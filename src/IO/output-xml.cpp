@@ -19,7 +19,7 @@ using namespace dcop_generator;
 using namespace misc_utils;
 using namespace std;
 
-std::map<std::string, std::set<std::string> > neighborMap;
+std::map<std::string, std::set<std::string>> neighborMap;
 const float minUtility = 0.0;
 const float maxUtility = 10.0;
 
