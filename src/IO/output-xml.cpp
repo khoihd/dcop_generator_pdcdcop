@@ -136,15 +136,19 @@ void output_xml::to_string(instance::ptr instance, std::string file) {
       dump_random_variables(os, instance->get_random_domains()); // random1 = [0,1,2];
 
       if (instance->to_string() == "random-network" || instance->to_string() == "grid-weather") {
-        dump_constraints_pdc(os, instance->get_constraints_pdc(), randomConstraints, joined_domains, false);
+        // dump_constraints_pdc(os, instance->get_constraints_pdc(), randomConstraints, joined_domains, false);
+        dump_functions_pdc(os, instance->get_constraints_pdc(), randomConstraints, joined_domains, false);
       }
       else if (instance->to_string() == "meeting scheduling") {
-        dump_constraints_pdc(os, instance->get_constraints_pdc(), randomConstraints, joined_domains, true);
+        // dump_constraints_pdc(os, instance->get_constraints_pdc(), randomConstraints, joined_domains, true);
+        dump_functions_pdc(os, instance->get_constraints_pdc(), randomConstraints, joined_domains, true);
       }
-      // dump_constraints_pdc(os, instance->get_constraints_pdc(), instance->get_decision_domains());
-      // dump_functions_pdc(os, instance->get_constraints_pdc());
-      dump_initProb(os, instance->get_random_domains());
-      dump_transition(os, instance->get_random_domains());
+      
+      // dump_initProb(os, instance->get_random_domains());
+      // dump_transition(os, instance->get_random_domains());
+
+      dump_initProb_continuous(os, instance->get_random_domains());
+      dump_transition_continuous(os, instance->get_random_domains());
 
       dump_graph_degree(os, instance->get_graph_degree());
       dump_selfRandomCount(os);
@@ -164,6 +168,38 @@ void output_xml::dump_random_variables(std::ostream &os, std::map<variable::ptr,
   for (auto const& entry : domains) {
     os << "random_" << entry.first->get_name() << "=" << entry.second->to_string() << ";" << endl;
   }
+}
+
+void output_xml::dump_functions_pdc(std::ostream &os, std::vector<constraint_pdc::ptr> decision_constraints, std::vector<constraint_pdc::ptr> random_constraints,
+                                      std::map<variable::ptr, domain::ptr> joined_domains, bool isMeeting) {
+  std::mt19937 rng;
+  rng.seed(std::random_device()());
+
+  std::uniform_real_distribution<> uniformUtility(minUtility, maxUtility);
+
+  std::vector<constraint_pdc::ptr> joined_constraints;
+  joined_constraints.insert(joined_constraints.end(), decision_constraints.begin(), decision_constraints.end());
+  joined_constraints.insert(joined_constraints.end(), random_constraints.begin(), random_constraints.end());
+
+  // TOOD: Stop here
+  for (constraint_pdc::ptr con : joined_constraints) {
+    std::string vars;
+    std::set<std::string> neighborPair;
+    for (variable::ptr var : con->get_scope()) {
+      if (var == NULL) {
+        continue;
+      }
+
+      vars.append(var->get_name());
+      neighborPair.insert(var->get_name());
+      vars.append(" ");
+    }
+    outputRandomFunction(os, vars.substr(0, vars.length() - 1));
+    storeNeighbors(neighborPair);
+    neighborPair.clear();
+  }
+
+  outputNeighborMap(os);
 }
 
 void output_xml::dump_constraints_pdc(std::ostream &os, std::vector<constraint_pdc::ptr> decision_constraints, std::vector<constraint_pdc::ptr> random_constraints,
@@ -232,6 +268,35 @@ void output_xml::dump_initProb(std::ostream &os, std::map<variable::ptr, domain:
   }
 }
 
+// Dump alpha and beta coefficients in Beta distribution
+void output_xml::dump_initProb_continuous(std::ostream &os, std::map<variable::ptr, domain::ptr> domains) {
+  std::mt19937 rng;
+  rng.seed(std::random_device()());
+  // std::uniform_int_distribution<std::mt19937::result_type> dist10(1, 10); // distribution in range [1, 10]
+  std::uniform_real_distribution<> dist10(4, 10); // distribution in range [1, 10]
+
+  for (auto const& entry : domains) {
+    // initial_distribution_y1=[alpha=2,beta=10]
+    os << INIT_PROBABILITY << "_" << entry.first->get_name() << "=[";
+    os << "alpha=" << dist10(rng) << ",beta=" << dist10(rng);
+    os << "];" << endl;
+  }
+}
+
+void output_xml::dump_transition_continuous(std::ostream &os, std::map<variable::ptr, domain::ptr> domains) {
+  std::mt19937 rng;
+  rng.seed(std::random_device()());
+  // std::uniform_int_distribution<std::mt19937::result_type> dist10(1, 10); // distribution in range [1, 10]
+  std::uniform_real_distribution<> dist10(4, 10); // distribution in range [1, 10]
+
+  for (auto const& entry : domains) {
+    // transition_y1=[alpha=2]
+    os << TRANSITION_FUNCTION << "_" << entry.first->get_name() << "=[";
+    os << "alpha=" << dist10(rng);
+    os << "];" << endl;
+  }
+}
+
 void output_xml::dump_transition(std::ostream &os, std::map<variable::ptr, domain::ptr> domains) {
   for (auto const& entry : domains) {
     os << TRANSITION_FUNCTION  << "_" << entry.first->get_name() << "=[" << endl;
@@ -265,22 +330,6 @@ void output_xml::dump_variables(std::ostream &os, std::vector<variable::ptr> var
 void output_xml::dump_relations( std::ostream &os, std::vector<relation::ptr> relations) {
 }
 
-void output_xml::dump_functions_pdc(std::ostream &os, std::vector<constraint_pdc::ptr> constraints) {
-  for (constraint_pdc::ptr con : constraints) {
-    // string vars;
-    // std::set<std::string> neighborPair;
-    for (variable::ptr var : con->get_scope()) {
-      // vars.append(var);
-      // neighborPair.insert(var);
-      // vars.append(" ");
-    }
-    // outputRandomFunction(os, vars.substr(0, vars.length() - 1));
-    // storeNeighbors(neighborPair);
-    // neighborPair.clear();
-  }
-  outputNeighborMap(os);
-}
-
 void output_xml::outputRandomFunction(std::ostream &os, string str) {
   std::mt19937 rng;
   rng.seed(std::random_device()());
@@ -293,7 +342,7 @@ void output_xml::outputRandomFunction(std::ostream &os, string str) {
   string var1 = str.substr(0, str.find(delimiter));
   string var2 = str.substr(str.find(delimiter) + 1);
 
-  os << "function ";
+  os << "function(" << var1 << "," << var2 << ")=";
   if (distSign(rng) == 0) os << "-"; os << dist10(rng);
   // os << dist10(rng);
   os << var1 << "^2" << " ";
