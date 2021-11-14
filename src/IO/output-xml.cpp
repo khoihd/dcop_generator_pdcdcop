@@ -390,7 +390,7 @@ void output_xml::outputNeighborMap(std::ostream &os) {
   for (auto const& mapEntry : neighborMap) {
     std::string agent = mapEntry.first;
     std::set<std::string> neighborSet = mapEntry.second;
-    os << "neighbor set: " << agent << ": ";
+    os << "neighbor_set_" << agent << "=";
     for (std::string neighbor : neighborSet) {
       os << neighbor << " ";
     }
