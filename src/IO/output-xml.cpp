@@ -278,7 +278,7 @@ void output_xml::dump_initProb_continuous(std::ostream &os, std::map<variable::p
   for (auto const& entry : domains) {
     // initial_distribution_y1=[alpha=2,beta=10]
     os << INIT_PROBABILITY << "_" << entry.first->get_name() << "=[";
-    os << "alpha=" << dist10(rng) << ",beta=" << dist10(rng);
+    os << "alpha:" << dist10(rng) << ",beta:" << dist10(rng);
     os << "];" << endl;
   }
 }
@@ -292,7 +292,7 @@ void output_xml::dump_transition_continuous(std::ostream &os, std::map<variable:
   for (auto const& entry : domains) {
     // transition_y1=[alpha=2]
     os << TRANSITION_FUNCTION << "_" << entry.first->get_name() << "=[";
-    os << "alpha=" << dist10(rng);
+    os << "alpha:" << dist10(rng);
     os << "];" << endl;
   }
 }
