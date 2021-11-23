@@ -389,9 +389,14 @@ void output_xml::storeNeighbors(std::set<std::string> neighborPair) {
 void output_xml::outputNeighborMap(std::ostream &os) {
   for (auto const& mapEntry : neighborMap) {
     std::string agent = mapEntry.first;
-    std::set<std::string> neighborSet = mapEntry.second;
+
+    // Do not print out the neighbor of random variables
+    if (agent.find("y") != std::string::npos) {
+      continue;
+    }
+
     os << "neighbor_set_" << agent << "=";
-    for (std::string neighbor : neighborSet) {
+    for (std::string neighbor : mapEntry.second) {
       os << neighbor << " ";
     }
     os << ";" << endl;
