@@ -397,6 +397,10 @@ void output_xml::outputNeighborMap(std::ostream &os) {
 
     os << "neighbor_set_" << agent << "=";
     for (std::string neighbor : mapEntry.second) {
+      // Do not print out random variables
+      if (neighbor.find("y") != std::string::npos) {
+        continue;
+      }
       os << neighbor << " ";
     }
     os << ";" << endl;
