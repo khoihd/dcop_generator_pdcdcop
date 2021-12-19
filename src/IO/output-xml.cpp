@@ -106,12 +106,12 @@ void output_xml::to_string(instance::ptr instance, std::string file) {
   int decision_domain, random_domain;
 
   for (auto const& entry : instance->get_decision_domains()) {
-    decision_domain = entry.second->get_max() + 1;
+    decision_domain = entry.second->get_max();
     break;
   }
 
   for (auto const& entry : instance->get_random_domains()) {
-    random_domain = entry.second->get_max() + 1;
+    random_domain = entry.second->get_max();
     break;
   }
 
