@@ -1,4 +1,5 @@
-./dcop_generator_pdcdcop 100 random -random 12 12 3 3 0.5 1
+./dcop_generator_pdcdcop 100 random -random 12 12 3 3 0.5 1 tree
+./dcop_generator_pdcdcop 100 random -random 12 12 3 3 0.5 1 graph
 ./dcop_generator_pdcdcop 100 meeting -meeting-scheduling 12 12 3 3 0.5 1
 ./dcop_generator 50 scale-free -scale-free 50 10 1.5 1 2
 ./dcop_generator 50 grid -grid 50 10 1

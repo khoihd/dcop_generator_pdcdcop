@@ -21,7 +21,7 @@ namespace dcop_generator
 		// @param p1 The network connectivity
 		// @param max_nb_neigbors The maximum number of neigbors for each node, if
 		//   0, then it is ignored.
-		random_graph(int nb_nodes, double p1, int max_nb_neighbors = 0);
+		random_graph(int nb_nodes, double p1, std::string topology_type, int max_nb_neighbors = 0);
 
 		~random_graph();
 

@@ -30,7 +30,7 @@ namespace dcop_generator
         // variables of an agent.
         // @param p1_agents The graph connectivity among agents.
         // @param p2 The constraint tightness
-        random_instance(int nb_agents, int nb_rands, int domain_size, int random_domain_size, double p1_agents, double p2,
+        random_instance(int nb_agents, int nb_rands, int domain_size, int random_domain_size, double p1_agents, double p2, std::string topology_type,
                         // optional
                         int max_nb_neighbors = 0,
                         int max_constr_arity = 2,

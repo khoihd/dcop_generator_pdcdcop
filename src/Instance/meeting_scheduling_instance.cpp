@@ -21,7 +21,7 @@ meeting_scheduling_instance::meeting_scheduling_instance(int nb_meetings, int nb
 
     m_max_constraint_arity = 2;
     int max_nb_neighbors = 0;
-    random_graph graph(nb_meetings, p1, max_nb_neighbors);
+    random_graph graph(nb_meetings, p1, "graph", max_nb_neighbors);
 
     add_agents(graph.get_nodes());
 

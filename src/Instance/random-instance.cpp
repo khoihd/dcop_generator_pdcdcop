@@ -14,22 +14,29 @@ using namespace std;
 
 //#define ONEREL
 
-random_instance::random_instance(int nb_agents, int nb_rands, int domain_size, int rand_dom_size, double p1_agents, double p2, int max_nb_neighbors,
-                                 int max_constr_arity, int nb_local_variables, int max_nb_boundary_variables,
-                                 double p1_local_variables) {
-    instance::type = "random";
+random_instance::random_instance(int nb_agents, int nb_rands, int domain_size, int rand_dom_size, double p1_agents, double p2, string topology_type,
+                                int max_nb_neighbors, int max_constr_arity, int nb_local_variables, 
+                                int max_nb_boundary_variables, double p1_local_variables) {
+    instance::type = "unknown";
+    if (topology_type == "tree") {
+        instance::type = "random_tree";
+    }
+    else if (topology_type == "graph") {
+        instance::type = "random_graph";
+    }
+
     this->setP1(p1_agents);
     this->setP2(p2);
 
     m_max_constraint_arity = max_constr_arity;
 
-    random_graph graph(nb_agents, p1_agents, max_nb_neighbors);
+    random_graph graph(nb_agents, p1_agents, topology_type, max_nb_neighbors);
 
     add_agents(graph.get_nodes());
 
     int nb_nodes = graph.get_nb_nodes();
     for (int n = 0; n < nb_nodes; ++n) {
-        random_graph subgraph(nb_local_variables, p1_local_variables);
+        random_graph subgraph(nb_local_variables, p1_local_variables, topology_type);
 
         int last_node = graph.get_nb_nodes();
         graph.join(subgraph, n, max_nb_boundary_variables);
@@ -40,8 +47,11 @@ random_instance::random_instance(int nb_agents, int nb_rands, int domain_size, i
             m_vars_to_agents[i] = n;
     }
 
-    add_decision_variables(graph.get_nodes(), 0, domain_size - 1, graph);
-    add_random_variables(nb_rands, 0, rand_dom_size - 1);
+    // add_decision_variables(graph.get_nodes(), 0, domain_size - 1, graph);
+    // add_random_variables(nb_rands, 0, rand_dom_size - 1);
+
+    add_decision_variables(graph.get_nodes(), -domain_size, domain_size, graph);
+    add_random_variables(nb_rands, -domain_size, domain_size);
 
     for (int k = max_constr_arity; k >= 3; k--) {
         vector<vector<int> > cliques = graph_utils::cliques(graph, k);

@@ -6,7 +6,7 @@ using namespace dcop_generator;
 using namespace std;
 using namespace misc_utils;
 
-random_graph::random_graph(int nb_nodes, double p1, int max_nb_neighbors)
+random_graph::random_graph(int nb_nodes, double p1, string topology_type, int max_nb_neighbors)
   : graph(nb_nodes) {
 
 	if (max_nb_neighbors == 0)
@@ -46,9 +46,9 @@ random_graph::random_graph(int nb_nodes, double p1, int max_nb_neighbors)
 
       // try adding and if there exists a cycle, remove that edge
       // TREE INSTANCES
-      // if (graph_utils::hasCycle(*this)) {
-      //  erase_edge(u, v);
-      // }
+      if (topology_type == "tree" && graph_utils::hasCycle(*this)) {
+      	erase_edge(u, v);
+      }
 		}
 	}
 

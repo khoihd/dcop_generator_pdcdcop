@@ -54,7 +54,7 @@ void input::check_params(int argc, char *argv[]) {
 
     for (int i = 0; i < argc; ++i) {
         if (strcmp("-random", argv[i]) == 0 &&
-            (argc == get_min_nb_arguments() + 4 + 2|| argc == get_min_nb_arguments() + 9 + 2))
+            (argc == get_min_nb_arguments() + 4 + 3|| argc == get_min_nb_arguments() + 9 + 3))
             return;
         if (strcmp("-scale-free", argv[i]) == 0 &&
             (argc == get_min_nb_arguments() + 5 || argc == get_min_nb_arguments() + 9))

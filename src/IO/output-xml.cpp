@@ -117,7 +117,7 @@ void output_xml::to_string(instance::ptr instance, std::string file) {
 
   std::string instance_rand_dec = "x" + std::to_string(instance->get_decision_domains().size()) + "_y" + std::to_string(instance->get_random_domains().size())
                                   + "_dx" + std::to_string(decision_domain) + "_dy" + std::to_string(random_domain);
-  std::string path_out = instance_type + "_" + instance_rand_dec;
+  std::string path_out = instance->get_type() + "_" + instance_rand_dec;
   misc_utils::utils::create_dir(path_out);
 
   std::string instance_file = path_out + "/" + "instance_" + instance_number + "_" + instance_rand_dec + ".dzn";
@@ -181,7 +181,6 @@ void output_xml::dump_functions_pdc(std::ostream &os, std::vector<constraint_pdc
   joined_constraints.insert(joined_constraints.end(), decision_constraints.begin(), decision_constraints.end());
   joined_constraints.insert(joined_constraints.end(), random_constraints.begin(), random_constraints.end());
 
-  // TOOD: Stop here
   for (constraint_pdc::ptr con : joined_constraints) {
     std::string vars;
     std::set<std::string> neighborPair;

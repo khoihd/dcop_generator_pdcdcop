@@ -25,8 +25,9 @@ instance::ptr instance_factory::create(int argc, char* argv[]) {
             int rand_dom_size = std::stoi(argv[++i]);
             double p1_agents = std::stof(argv[++i]);
             double p2 = 1 - std::stof(argv[++i]);
+            string topology_type = argv[++i]; // "tree" or "graph"
 
-            if (argc > input::get_min_nb_arguments() + 4 + 2) {
+            if (argc > input::get_min_nb_arguments() + 4 + 3) {
                 int max_nb_neigbors = std::stoi(argv[++i]);
                 int max_constr_arity = std::stoi(argv[++i]);
                 int nb_local_vars = std::stoi(argv[++i]);
@@ -39,6 +40,7 @@ instance::ptr instance_factory::create(int argc, char* argv[]) {
                                                     rand_dom_size,
                                                     p1_agents,
                                                     p2,
+                                                    topology_type,
                                                     max_nb_neigbors,
                                                     max_constr_arity,
                                                     nb_local_vars,
@@ -46,7 +48,7 @@ instance::ptr instance_factory::create(int argc, char* argv[]) {
                                                     p1_local_vars);
             }
             else {
-                return make_shared<random_instance>(nb_agents, nb_rands, dom_size, rand_dom_size, p1_agents, p2);
+                return make_shared<random_instance>(nb_agents, nb_rands, dom_size, rand_dom_size, p1_agents, p2, topology_type);
             }
         }
 
